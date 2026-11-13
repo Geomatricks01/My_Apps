@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aisle Pal</title>
+<meta name="description" content="A hands-free voice helper for grocery shopping.">
+<meta name="theme-color" content="#14532d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Aisle Pal">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <h1>Aisle Pal</h1>
+  <span id="phaseTag" class="tag">Planning</span>
+</header>
+
+<main>
+  <!-- 1. Build the list -->
+  <section id="viewBuild" class="view">
+    <p class="lead">What do you need? Type it, or tap the mic and say it.</p>
+    <form id="addForm" class="addrow" autocomplete="off">
+      <input id="addInput" type="text" placeholder="e.g. milk, eggs, ground beef" aria-label="Add items" enterkeyhint="done">
+      <button type="button" id="buildMic" class="iconbtn" aria-label="Dictate items" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12z"/></svg>
+      </button>
+      <button type="submit" class="btn">Add</button>
+    </form>
+    <p id="buildHeard" class="heard" aria-live="polite"></p>
+
+    <div id="usualsWrap" hidden>
+      <h2>Your usuals</h2>
+      <div id="usuals" class="chips"></div>
+    </div>
+
+    <h2 id="listTitle">Your list</h2>
+    <ul id="buildList" class="items"></ul>
+    <p id="buildEmpty" class="empty">Nothing yet. Add your first item above.</p>
+
+    <div class="sticky">
+      <button id="lockBtn" class="btn primary big" disabled>Lock in list</button>
+    </div>
+  </section>
+
+  <!-- 2. Shopping "call" -->
+  <section id="viewShop" class="view" hidden>
+    <div id="voiceBanner" class="banner" hidden></div>
+    <div class="call">
+      <button id="orb" class="orb" aria-label="Microphone on. Tap to mute."><span></span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-2.1A7 7 0 0 0 19 12z"/></svg>
+      </button>
+      <div id="micState" class="micstate">Listening…</div>
+      <div id="progress" class="progress"></div>
+    </div>
+
+    <div class="nextcard">
+      <div class="eyebrow" id="nextLabel">Next up</div>
+      <div id="nextName" class="nextname">—</div>
+      <div id="nextWhy" class="nextwhy"></div>
+    </div>
+
+    <div class="convo" aria-live="polite">
+      <div class="line you"><b>You</b><span id="heard">Say what you just picked up…</span></div>
+      <div class="line pal"><b>Pal</b><span id="said"></span></div>
+    </div>
+
+    <form id="sayForm" class="addrow" autocomplete="off">
+      <input id="sayInput" type="text" placeholder="…or type it: “got the milk”" aria-label="Type instead of speaking" enterkeyhint="send">
+      <button type="submit" class="btn">Send</button>
+    </form>
+
+    <h2>Still to get</h2>
+    <ul id="shopPending" class="items"></ul>
+    <h2 id="gotTitle">In the cart</h2>
+    <ul id="shopGot" class="items"></ul>
+
+    <div class="sticky">
+      <button id="endBtn" class="btn danger big">End trip</button>
+    </div>
+  </section>
+
+  <!-- 3. Trip summary -->
+  <section id="viewDone" class="view" hidden>
+    <div class="donecard">
+      <div class="check">✓</div>
+      <h2 id="doneTitle">Trip complete</h2>
+      <p id="doneText"></p>
+    </div>
+    <div id="leftWrap" hidden>
+      <h2>Didn't get</h2>
+      <ul id="leftList" class="items"></ul>
+      <p class="hint">These carry over to your next list.</p>
+    </div>
+    <div id="learnWrap" hidden>
+      <h2>Your route so far</h2>
+      <p id="learnText" class="hint"></p>
+    </div>
+    <div class="sticky">
+      <button id="newBtn" class="btn primary big">Start next list</button>
+    </div>
+  </section>
+</main>
+
+<!-- "Is this list firm?" -->
+<dialog id="confirmDlg">
+  <h2>Is this list firm?</h2>
+  <p id="confirmCount" class="hint"></p>
+  <ul id="confirmList" class="confirmlist"></ul>
+  <p id="confirmHeard" class="heard" aria-live="polite"></p>
+  <div class="dlgbtns">
+    <button id="confirmNo" class="btn">Not yet</button>
+    <button id="confirmYes" class="btn primary">Yes, start shopping</button>
+  </div>
+</dialog>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
